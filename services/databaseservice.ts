@@ -26,7 +26,9 @@ export interface PasswordCreate {
 
 export const getAllBookings = async (): Promise<Booking[]> => {
   const res = await fetch(`${API}/bookings`);
-  return res.ok ? res.json() : [];
+  if (!res.ok) return [];
+  const body = await res.json();
+  return body.data as Booking[];
 };
 
 export const getBookingById = async (id: number): Promise<Booking | null> => {
@@ -38,7 +40,9 @@ export const getBookingByNumber = async (
   bookingNumber: string
 ): Promise<Booking | null> => {
   const res = await fetch(`${API}/bookings/number/${bookingNumber}`);
-  return res.ok ? res.json() : null;
+  if (!res.ok) return null;
+  const body = await res.json();
+  return body.data as Booking; // unwrap the ApiResponse
 };
 
 export const createBooking = async (
