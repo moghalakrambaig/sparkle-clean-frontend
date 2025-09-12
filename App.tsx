@@ -775,7 +775,7 @@ export default function App() {
                     <Route path="/admin/login" element={<AdminLoginPage />} />
 
                     <Route element={<ProtectedRoute />}>
-                        <Route path="admin/bookings" element={<AdminBookingsPage />} />
+                        <Route path="/admin/bookings" element={<AdminBookingsPage />} />
                         <Route path="/admin/settings" element={<AdminSettingsPage />} />
                     </Route>
                 </Route>
