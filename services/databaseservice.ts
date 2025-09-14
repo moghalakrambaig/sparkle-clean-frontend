@@ -32,7 +32,7 @@ export const getAllBookings = async (): Promise<Booking[]> => {
 };
 
 export const getBookingById = async (id: number): Promise<Booking | null> => {
-  const res = await fetch(`${API}/bookings/${id}`);
+  const res = await fetch(`${API}/bookings/number/${id}`);
   return res.ok ? res.json() : null;
 };
 
