@@ -511,7 +511,10 @@ const StatusPage: React.FC = () => {
                         <div className={getStatusChip(booking.status)}>{booking.status}</div>
                         <div className="mt-6 text-left border-t pt-6 space-y-3">
                             <p><strong className="font-medium text-gray-800">Service:</strong> {SERVICES_DATA.find(s => s.id === booking.service)?.title}</p>
-                            <p><strong className="font-medium text-gray-800">Date & Time:</strong> {new Date(booking.date).toLocaleDateString()} at {booking.time}</p>
+                            <p>
+  <strong className="font-medium text-gray-800">Date & Time:</strong>
+  {booking.date} at {booking.time}
+</p>
                             <p><strong className="font-medium text-gray-800">Address:</strong> {booking.address}</p>
                         </div>
                     </div>
