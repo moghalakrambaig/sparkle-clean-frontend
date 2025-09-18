@@ -42,7 +42,7 @@ export const getBookingByNumber = async (
   const res = await fetch(`${API}/bookings/number/${bookingNumber}`);
   if (!res.ok) return null;
   const body = await res.json();
-  return body.data as Booking; // unwrap the ApiResponse
+  return body.data as Booking;   // <-- correct
 };
 
 export const createBooking = async (
