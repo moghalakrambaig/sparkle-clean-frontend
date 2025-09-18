@@ -89,14 +89,14 @@ export const login = async (password: string): Promise<boolean> => {
 };
 
 export const getPasswords = async (): Promise<Password[]> => {
-  const res = await fetch(`${API}/auth/passwords`);
+  const res = await fetch(`${API}/api/auth/passwords`);
   return res.ok ? res.json() : [];
 };
 
 export const addPassword = async (
   password: PasswordCreate
 ): Promise<Password | null> => {
-  const res = await fetch(`${API}/auth/passwords`, {
+  const res = await fetch(`${API}/api/auth/passwords`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(password),
@@ -105,7 +105,7 @@ export const addPassword = async (
 };
 
 export const deletePassword = async (id: number): Promise<boolean> => {
-  const res = await fetch(`${API}/auth/passwords/${id}`, {
+  const res = await fetch(`${API}/api/auth/passwords/${id}`, {
     method: "DELETE",
   });
   return res.ok;
