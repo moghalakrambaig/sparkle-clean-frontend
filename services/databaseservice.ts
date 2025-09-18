@@ -78,7 +78,7 @@ export const deleteBooking = async (id: number): Promise<boolean> => {
 // ==================== ADMIN PASSWORDS ====================
 
 export const login = async (password: string): Promise<boolean> => {
-  const res = await fetch(`${API}/auth/login`, {
+  const res = await fetch(`${API}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password }),
