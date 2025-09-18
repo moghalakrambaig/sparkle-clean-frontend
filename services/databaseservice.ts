@@ -89,7 +89,7 @@ export const login = async (password: string): Promise<boolean> => {
 };
 
 export const getPasswords = async (): Promise<Password[]> => {
-  const res = await fetch(`${API}/api/auth/passwords`);
+  const res = await fetch(`${API}/api/auth/getallpasswords`);
   return res.ok ? res.json() : [];
 };
 
