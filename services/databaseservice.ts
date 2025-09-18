@@ -42,8 +42,10 @@ export const getBookingByNumber = async (
   const res = await fetch(`${API}/bookings/number/${bookingNumber}`);
   if (!res.ok) return null;
   const body = await res.json();
-  return body.data as Booking;   // <-- correct
+  console.log('RAW BODY', body);   // 👈 inspect what the server actually sends
+  return body.data as Booking;
 };
+
 
 export const createBooking = async (
   booking: Omit<Booking, "id" | "bookingNumber" | "status">
