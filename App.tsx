@@ -512,9 +512,10 @@ const StatusPage: React.FC = () => {
                         <div className="mt-6 text-left border-t pt-6 space-y-3">
                             <p><strong className="font-medium text-gray-800">Service:</strong> {booking.service}</p>
                             <p>
-  <strong className="font-medium text-gray-800">Date & Time:</strong>
-  {booking.date} at {booking.time}
-</p>
+                                <strong className="font-medium text-gray-800">Date & Time:</strong>{" "}
+                                {new Date(`${booking.date}T00:00:00`).toLocaleDateString()} at {booking.time}
+                            </p>
+
                             <p><strong className="font-medium text-gray-800">Address:</strong> {booking.address}</p>
                         </div>
                     </div>
