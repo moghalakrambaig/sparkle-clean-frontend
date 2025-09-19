@@ -56,12 +56,18 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [passwords, setPasswords] = useState<Password[]>([]);
 
 
+    // useEffect(() => {
+    //     const fetchPasswords = async () => {
+    //         const fetchedPasswords = await api.getPasswords();
+    //         setPasswords(fetchedPasswords);
+    //     };
+    //     fetchPasswords();
+    // }, []);
+
     useEffect(() => {
-        const fetchPasswords = async () => {
-            const fetchedPasswords = await api.getPasswords();
-            setPasswords(fetchedPasswords);
-        };
-        fetchPasswords();
+        if (sessionStorage.getItem('isAdmin') === 'true') {
+            api.getPasswords().then(setPasswords);
+        }
     }, []);
 
     const login = (password: string): boolean => {
