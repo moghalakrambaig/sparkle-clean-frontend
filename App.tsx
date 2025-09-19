@@ -630,13 +630,20 @@ const AdminLoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError('');
-        if (login(password)) {
-            navigate('/admin/bookings', { replace: true });
-        } else {
-            setError('Invalid password. Please try again.');
+
+        try {
+            const ok = await login(password);   // wait for the POST to finish
+            if (ok) {
+                navigate('/admin/bookings', { replace: true });
+            } else {
+                setError('Invalid password. Please try again.');
+            }
+        } catch (err) {
+            console.error(err);
+            setError('Something went wrong. Please try again.');
         }
     };
 
