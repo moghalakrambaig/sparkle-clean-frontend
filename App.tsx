@@ -3,7 +3,6 @@ import { Routes, Route, Link, NavLink, useLocation, useNavigate, Navigate, Outle
 import * as api from './services/databaseservice';
 import AdminBookingsPage from './admin-app/AdminBookingsPage';
 
-// --- 1. TYPE DEFINITIONS ---
 type BookingStatus = 'Pending' | 'Approved' | 'Rejected';
 
 interface Booking {
@@ -144,7 +143,6 @@ const XCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (<svg xm
 const PhoneIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" {...props}><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg>);
 
 // --- 5. DATA CONSTANTS ---
-
 const SERVICES_DATA: Service[] = [
     { id: 'deep-cleaning', title: 'Deep Cleaning', description: 'A thorough cleaning of your entire home, top to bottom.', icon: DeepCleanIcon, price: '' },
     { id: 'carpet-cleaning', title: 'Carpet Cleaning', description: 'Professional steam cleaning for your carpets.', icon: CarpetIcon, price: '90' },
@@ -159,7 +157,6 @@ const House_Cleaner: Cleaner = {
 };
 
 // --- 6. LAYOUT & HELPER COMPONENTS ---
-
 const ScrollToTop = () => {
     const { pathname } = useLocation();
     useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
@@ -525,125 +522,23 @@ const StatusPage: React.FC = () => {
     );
 };
 
-
-// const AdminBookingsPage = () => {
-//     const [bookings, setBookings] = useState<Booking[]>([]);
-//     const [isLoading, setIsLoading] = useState(true);
-//     const [showDeleteModal, setShowDeleteModal] = useState<number | null>(null);
-
-//     const loadBookings = async () => {
-//         setIsLoading(true);
-//         const allBookings = await api.getAllBookings();
-//         setBookings(allBookings.sort((a, b) => b.id - a.id));
-//         setIsLoading(false);
-//     };
-
-//     useEffect(() => { loadBookings(); }, []);
-
-//     const handleUpdateStatus = async (bookingId: number, status: BookingStatus) => {
-//         await api.updateBookingStatus(bookingId, status);
-//         loadBookings();
-//     };
-
-//     const handleDeleteBooking = async (bookingId: number) => {
-//         await api.deleteBooking(bookingId);
-//         setShowDeleteModal(null);
-//         loadBookings();
-//     };
-
-//     const getStatusChip = (status: BookingStatus) => {
-//         const baseClasses = 'px-3 py-1 text-xs font-semibold rounded-full';
-//         switch (status) {
-//             case 'Approved': return `${baseClasses} bg-green-100 text-green-800`;
-//             case 'Pending': return `${baseClasses} bg-yellow-100 text-yellow-800`;
-//             case 'Rejected': return `${baseClasses} bg-red-100 text-red-800`;
-//             default: return '';
-//         }
-//     };
-
-
-//     return (
-//         <PageWrapper>
-//             <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">Admin Dashboard: All Bookings</h1>
-//              {isLoading ? (
-//                 <p className="text-center text-gray-600 text-lg">Loading bookings...</p>
-//             ) : bookings.length > 0 ? (
-//                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-//                     {bookings.map((booking) => (
-//                         <div key={booking.id} className="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
-//                            <div>
-//                                 <div className="flex justify-between items-start mb-2">
-//                                     <h3 className="text-xl font-bold text-sky-600">{SERVICES_DATA.find(s => s.id === booking.service)?.title}</h3>
-//                                     <span className={getStatusChip(booking.status)}>{booking.status}</span>
-//                                 </div>
-//                                 <p className="text-gray-500 text-sm font-mono mb-4">{booking.bookingNumber}</p>
-//                                 <hr className="my-3" />
-//                                 <div className="space-y-2 text-sm text-gray-700">
-//                                     <p><strong className="font-medium text-gray-900">Customer:</strong> {booking.name}</p>
-//                                     <p className="flex items-center">
-//                                         <PhoneIcon className="w-4 h-4 mr-2 text-gray-500 flex-shrink-0" />
-//                                         <a href={`tel:${booking.phone}`} className="text-sky-600 hover:underline">{booking.phone}</a>
-//                                     </p>
-//                                     <p><strong className="font-medium text-gray-900">Address:</strong> {booking.address}</p>
-//                                 </div>
-//                                 <hr className="my-3" />
-//                                 <div className="space-y-2 text-sm text-gray-600">
-//                                     <p><span className="font-medium">Date:</span> {new Date(booking.date).toLocaleDateString()}</p>
-//                                     <p><span className="font-medium">Time:</span> {booking.time}</p>
-//                                 </div>
-//                            </div>
-//                            <div className="flex flex-wrap items-center justify-end gap-2 mt-6">
-//                                {booking.status === 'Pending' && (
-//                                 <>
-//                                   <button onClick={() => handleUpdateStatus(booking.id, 'Approved')} className="flex items-center px-3 py-2 text-sm text-white bg-green-500 rounded-md hover:bg-green-600"><CheckCircleIcon className="mr-1" />Approve</button>
-//                                   <button onClick={() => handleUpdateStatus(booking.id, 'Rejected')} className="flex items-center px-3 py-2 text-sm text-white bg-orange-500 rounded-md hover:bg-orange-600"><XCircleIcon className="mr-1" />Reject</button>
-//                                 </>
-//                                )}
-//                                <button onClick={() => setShowDeleteModal(booking.id)} className="flex items-center px-3 py-2 text-sm text-white bg-red-500 rounded-md hover:bg-red-600"><TrashIcon className="mr-1" />Delete</button>
-//                            </div>
-//                         </div>
-//                     ))}
-//                 </div>
-//             ) : (
-//                 <p className="text-center text-gray-600 text-lg">No bookings have been made yet.</p>
-//             )}
-
-//             {showDeleteModal !== null && (
-//                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-//                     <div className="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full">
-//                         <h2 className="text-xl font-bold text-gray-800 mb-4">Confirm Deletion</h2>
-//                         <p className="text-gray-600 mb-6">Are you sure you want to delete this booking?</p>
-//                         <div className="flex justify-end space-x-4">
-//                             <button onClick={() => setShowDeleteModal(null)} className="px-4 py-2 rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300">Cancel</button>
-//                             <button onClick={() => handleDeleteBooking(showDeleteModal)} className="px-4 py-2 rounded-md text-white bg-red-600 hover:bg-red-700">Delete</button>
-//                         </div>
-//                     </div>
-//                 </div>
-//             )}
-//         </PageWrapper>
-//     );
-// };
-
 const AdminLoginPage = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError('');
-
-        try {
-            const ok = await login(password);   // wait for the POST to finish
-            if (ok) {
-                navigate('/admin/bookings', { replace: true });
-            } else {
-                setError('Invalid password. Please try again.');
-            }
-        } catch (err) {
-            console.error(err);
-            setError('Something went wrong. Please try again.');
+        const ok = await login(password);
+        if (ok) {
+            sessionStorage.setItem('isAdmin', 'true');
+            setIsAdmin(true);
+            navigate('/admin/bookings', { replace: true });
+        } else {
+            setError('Invalid password. Please try again.');
         }
     };
 
