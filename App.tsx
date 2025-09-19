@@ -42,43 +42,56 @@ interface Cleaner {
 // --- 1.5. AUTHENTICATION ---
 interface AuthContextType {
     isAdmin: boolean;
-    passwords: { id: number; password: string }[];
-    login: (password: string) => boolean;
+    passwords: Password[];
+    login: (password: string) => Promise<boolean>;
     logout: () => void;
     addPassword: (password: string) => Promise<boolean>;
-    deletePassword: (id: number) => Promise<boolean>;   // ✅ now takes id
+    deletePassword: (id: number) => Promise<boolean>;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
-const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [isAdmin, setIsAdmin] = useState<boolean>(() => sessionStorage.getItem('isAdmin') === 'true');
     const [passwords, setPasswords] = useState<Password[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
-
-    // useEffect(() => {
-    //     const fetchPasswords = async () => {
-    //         const fetchedPasswords = await api.getPasswords();
-    //         setPasswords(fetchedPasswords);
-    //     };
-    //     fetchPasswords();
-    // }, []);
-
+    // Fetch passwords on app load
     useEffect(() => {
-        if (sessionStorage.getItem('isAdmin') === 'true') {
-            api.getPasswords().then(setPasswords);
-        }
+        const fetchPasswords = async () => {
+            try {
+                const fetched = await api.getPasswords();
+                setPasswords(fetched);
+            } catch (err) {
+                console.error("Failed to fetch passwords:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPasswords();
     }, []);
 
-    const login = (password: string): boolean => {
-        if (passwords.some(p => p.password === password)) {   // ✅ check against object.password
+    // Async login function
+    const login = async (password: string): Promise<boolean> => {
+        if (loading) {
+            // Wait until passwords are loaded
+            await new Promise<void>((resolve) => {
+                const interval = setInterval(() => {
+                    if (!loading) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 50);
+            });
+        }
+
+        const success = passwords.some(p => p.password === password);
+        if (success) {
             sessionStorage.setItem('isAdmin', 'true');
             setIsAdmin(true);
-            return true;
         }
-        return false;
+        return success;
     };
-
 
     const logout = () => {
         sessionStorage.removeItem('isAdmin');
@@ -88,42 +101,48 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const addPassword = async (password: string): Promise<boolean> => {
         if (!password || passwords.some(p => p.password === password)) return false;
 
-        // ❌ don't send id
-        const newPw = { password } as Omit<Password, 'id'>;
-        const createdPw = await api.addPassword(newPw as Password);// backend returns created AdminPassword
-        if (createdPw) {
-            setPasswords(prev => [...prev, createdPw]); // save returned object with id
-            return true;
+        try {
+            const newPw = { password } as Omit<Password, 'id'>;
+            const created = await api.addPassword(newPw as Password);
+            if (created) {
+                setPasswords(prev => [...prev, created]);
+                return true;
+            }
+            return false;
+        } catch (err) {
+            console.error("Failed to add password:", err);
+            return false;
         }
-        return false;
     };
-
 
     const deletePassword = async (id: number): Promise<boolean> => {
         if (passwords.length <= 1) return false;
-        const success = await api.deletePassword(id);
-        if (success) setPasswords(prev => prev.filter(p => p.id !== id));
-        return success;
+        try {
+            const success = await api.deletePassword(id);
+            if (success) setPasswords(prev => prev.filter(p => p.id !== id));
+            return success;
+        } catch (err) {
+            console.error("Failed to delete password:", err);
+            return false;
+        }
     };
-
-
 
     return (
         <AuthContext.Provider
             value={{
                 isAdmin,
-                passwords, // keep as array of {id, password}
+                passwords,
                 login,
                 logout,
                 addPassword,
-                deletePassword
+                deletePassword,
             }}
         >
             {children}
         </AuthContext.Provider>
-
     );
 };
+
 
 
 const useAuth = () => {
@@ -528,53 +547,57 @@ const StatusPage: React.FC = () => {
     );
 };
 
-const AdminLoginPage = () => {
+const AdminLoginPage: React.FC = () => {
     const navigate = useNavigate();
-    const { login } = useAuth();
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
+    const auth = useAuth();
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        setError('');
-        const ok = await login(password);
-        if (ok) {
-            sessionStorage.setItem('isAdmin', 'true');
-            setIsAdmin(true);
-            navigate('/admin/bookings', { replace: true });
-        } else {
-            setError('Invalid password. Please try again.');
+        if (!auth) return; // safety check
+
+        setError("");
+        setIsSubmitting(true);
+
+        try {
+            const ok = await auth.login(password); // ✅ await async login
+            if (ok) {
+                navigate("/admin/bookings", { replace: true });
+            } else {
+                setError("Invalid password. Please try again.");
+            }
+        } catch (err) {
+            console.error("Login failed:", err);
+            setError("Something went wrong. Try again later.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <PageWrapper>
-            <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl mt-16">
-                <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h1>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            required
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            aria-describedby="password-error"
-                        />
-                    </div>
-                    {error && <p id="password-error" className="text-red-500 text-sm">{error}</p>}
-                    <div>
-                        <button type="submit" className="w-full bg-sky-500 text-white py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium hover:bg-sky-600">
-                            Login
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </PageWrapper>
+        <div className="max-w-sm mx-auto mt-20 p-6 border rounded shadow">
+            <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <input
+                    type="password"
+                    placeholder="Enter admin password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="p-2 border rounded"
+                    disabled={isSubmitting}
+                />
+                {error && <p className="text-red-500">{error}</p>}
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white p-2 rounded disabled:opacity-50"
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? "Logging in..." : "Login"}
+                </button>
+            </form>
+        </div>
     );
 };
 
