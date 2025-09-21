@@ -53,7 +53,8 @@ export const createBooking = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(booking),
   });
-  return res.ok ? res.json() : null;
+  const body = await res.json();
+  return body.data ?? null;
 };
 
 export const updateBookingStatus = async (
