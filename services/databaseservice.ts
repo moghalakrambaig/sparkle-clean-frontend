@@ -23,6 +23,7 @@ export interface PasswordCreate {
   password: string;       // 🔑 no id required when creating
 }
 
+// ==================== BOOKINGS ====================
 export const getAllBookings = async (): Promise<Booking[]> => {
   const res = await fetch(`${API}/bookings`);
   if (!res.ok) return [];
@@ -87,7 +88,8 @@ export const login = async (password: string): Promise<boolean> => {
 
 export const getPasswords = async (): Promise<Password[]> => {
   const res = await fetch(`${API}/api/auth/getallpasswords`);
-  return res.ok ? res.json() : [];
+  const body = await res.json();
+  return res.ok ? body.data as Password[] : [];
 };
 
 export const addPassword = async (
@@ -98,7 +100,8 @@ export const addPassword = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(password),
   });
-  return res.ok ? res.json() : null;
+  const body = await res.json();
+  return res.ok ? body.data as Password : null;
 };
 
 export const deletePassword = async (id: number): Promise<boolean> => {
