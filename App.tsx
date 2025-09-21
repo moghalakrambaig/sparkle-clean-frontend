@@ -555,20 +555,24 @@ const AdminLoginPage: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault();
-  setError('');
-  try {
-    const ok = await auth.login(password);   // MUST call the API login
-    if (ok) {
-      sessionStorage.setItem("isAdmin", "true");
-      navigate('/admin/bookings', { replace: true });
-    } else {
-      setError('Invalid password. Please try again.');
-    }
-  } catch (err) {
-    setError('Something went wrong. Try again later.');
-  }
-};
+        e.preventDefault();
+        setError("");
+        setIsSubmitting(true);
+        try {
+            const ok = await auth.login(password); // ✅ must use auth.login
+            if (ok) {
+                navigate("/admin/bookings", { replace: true });
+            } else {
+                setError("Invalid password");
+            }
+        } catch (err) {
+            console.error(err);
+            setError("Something went wrong");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
 
 
     return (
