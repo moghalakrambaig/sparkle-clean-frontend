@@ -555,26 +555,21 @@ const AdminLoginPage: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        if (!auth) return; // safety check
+  e.preventDefault();
+  setError('');
+  try {
+    const ok = await auth.login(password);   // MUST call the API login
+    if (ok) {
+      sessionStorage.setItem("isAdmin", "true");
+      navigate('/admin/bookings', { replace: true });
+    } else {
+      setError('Invalid password. Please try again.');
+    }
+  } catch (err) {
+    setError('Something went wrong. Try again later.');
+  }
+};
 
-        setError("");
-        setIsSubmitting(true);
-
-        try {
-            const ok = await auth.login(password); // ✅ await async login
-            if (ok) {
-                navigate("/admin/bookings", { replace: true });
-            } else {
-                setError("Invalid password. Please try again.");
-            }
-        } catch (err) {
-            console.error("Login failed:", err);
-            setError("Something went wrong. Try again later.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
 
     return (
         <div className="max-w-sm mx-auto mt-20 p-6 border rounded shadow">

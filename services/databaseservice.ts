@@ -19,7 +19,6 @@ export interface Password {
   password: string;
 }
 
-// What we SEND when creating a new password
 export interface PasswordCreate {
   password: string;       // 🔑 no id required when creating
 }
@@ -44,8 +43,6 @@ export const getBookingByNumber = async (
   const body = await res.json();
   return body.data as Booking;   // <- important
 };
-
-
 
 export const createBooking = async (
   booking: Omit<Booking, "id" | "bookingNumber" | "status">
@@ -75,8 +72,8 @@ export const deleteBooking = async (id: number): Promise<boolean> => {
   return res.ok;
 };
 
-// ==================== ADMIN PASSWORDS ====================
 
+// ==================== ADMIN PASSWORDS ====================
 export const login = async (password: string): Promise<boolean> => {
   const res = await fetch(`${API}/api/auth/login`, {
     method: "POST",
