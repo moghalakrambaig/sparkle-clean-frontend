@@ -9,7 +9,11 @@ interface Cleaner {
 }
 
 export const House_Cleaner: Cleaner = {
-    name: "Geidy Cabrera", role: "Founder & Head Cleaner", bio: "With over 15 years of experience, Geidy founded SparkleClean with a passion for creating pristine and healthy living spaces.", imageUrl: "https://i.ibb.co/Vt9rQy7/cleaner.png", contact: "+14752080329",
+    name: "Geidy Cabrera",
+    role: "Founder & Head Cleaner",
+    bio: "With over 15 years of experience, Geidy founded SparkleClean with a passion for creating pristine and healthy living spaces.",
+    imageUrl: "https://www.onlinelogomaker.com/blog/wp-content/uploads/2017/06/icon-of-a-person-cleaning.jpg",
+    contact: "+14752080329",
 };
 
 const AboutPage = () => (
