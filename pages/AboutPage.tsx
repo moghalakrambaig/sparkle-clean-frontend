@@ -16,7 +16,7 @@ export const House_Cleaner: Cleaner = {
     contact: "+14752080329",
 };
 
-const AboutPage = () => (
+export const AboutPage = () => (
     <PageWrapper>
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">About SparkleClean</h1>
         <div className="text-center max-w-3xl mx-auto text-gray-600 text-lg mb-16">
