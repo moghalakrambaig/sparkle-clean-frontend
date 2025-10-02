@@ -2,7 +2,6 @@ import React, { useState, useEffect, FormEvent, ReactNode, createContext, useCon
 import { Routes, Route, Link, NavLink, useLocation, useNavigate, Navigate, Outlet } from 'react-router-dom';
 import * as api from './services/databaseservice';
 import AdminBookingsPage from './admin-app/AdminBookingsPage';
-import { House_Cleaner } from './pages/AboutPage';
 import AboutPage from './pages/AboutPage';
 
 type BookingStatus = 'Pending' | 'Approved' | 'Rejected';
@@ -20,6 +19,14 @@ interface Booking {
     status: BookingStatus;
 }
 
+interface Cleaner {
+    name: string;
+    role: string;
+    bio: string;
+    imageUrl: string;
+    contact: string;
+}
+
 interface Password {
     id: number;
     password: string;
@@ -33,6 +40,13 @@ interface Service {
     price: string;
 }
 
+export const House_Cleaner: Cleaner = {
+    name: "Geidy Cabrera",
+    role: "Founder & Head Cleaner",
+    bio: "With over 15 years of experience, Geidy founded SparkleClean with a passion for creating pristine and healthy living spaces.",
+    imageUrl: "https://www.onlinelogomaker.com/blog/wp-content/uploads/2017/06/icon-of-a-person-cleaning.jpg",
+    contact: "+14752080329",
+};
 // --- 1.5. AUTHENTICATION ---
 interface AuthContextType {
     isAdmin: boolean;
@@ -137,8 +151,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     );
 };
 
-
-
 const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
@@ -146,7 +158,6 @@ const useAuth = () => {
     }
     return context;
 };
-
 
 // --- 2. ICONS (as components) ---
 const SparkleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>);
@@ -418,6 +429,22 @@ const BookingPage = () => {
     );
 };
 
+const AboutPage = () => (
+    <PageWrapper>
+        <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">About SparkleClean</h1>
+        <div className="text-center max-w-3xl mx-auto text-gray-600 text-lg mb-16">
+            <p>Founded on the principle that a clean home is a happy home, SparkleClean has been dedicated to providing top-tier cleaning services. Our mission is to create pristine environments that allow our clients to focus on what matters most.</p>
+        </div>
+        <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <img src={House_Cleaner.imageUrl} alt={House_Cleaner.name} className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-sky-100" />
+            <h3 className="text-xl font-semibold text-gray-800">{House_Cleaner.name}</h3>
+            <p className="text-sky-600 font-medium mb-2">{House_Cleaner.role}</p>
+            <p className="text-gray-600 text-sm">{House_Cleaner.bio}</p>
+            <p className="mt-3 text-gray-700">📞 {House_Cleaner.contact}</p>
+        </div>
+    </PageWrapper>
+);
+
 const ContactPage = () => (
     <PageWrapper>
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">Contact Us</h1>
@@ -658,7 +685,6 @@ const AdminSettingsPage = () => {
         </PageWrapper>
     );
 };
-
 
 const ProtectedRoute = () => {
     const { isAdmin } = useAuth();
