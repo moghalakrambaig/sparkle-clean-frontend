@@ -272,7 +272,12 @@ const Header = () => {
 const Footer = () => (
     <footer className="bg-gray-800 text-white">
         <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; {new Date().getFullYear()} SparkleClean. All Right Reserved.</p>
+            <p>&copy; {new Date().getFullYear()} SparkleClean. All Rights Reserved.</p>
+            <p className="mt-2">
+                <Link to="/admin/login" className="text-blue-400 hover:underline">
+                    Admin Login
+                </Link>
+            </p>
         </div>
     </footer>
 );
