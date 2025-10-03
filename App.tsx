@@ -40,10 +40,10 @@ interface Service {
 }
 
 export const House_Cleaner: Cleaner = {
-    name: "Geidy Cabrera",
+    name: "Tania Intriago",
     role: "Founder & Head Cleaner",
-    bio: "With over 15 years of experience, Geidy founded SparkleClean with a passion for creating pristine and healthy living spaces.",
-    imageUrl: "https://www.onlinelogomaker.com/blog/wp-content/uploads/2017/06/icon-of-a-person-cleaning.jpg",
+    bio: "With years of experience, I founded SparkleClean from a passion for making homes and workplaces fresh, vibrant, and healthy. To me, cleaning isn’t just a service—it’s about creating a sparkle that brings comfort, clarity, and joy.",
+    imageUrl: "https://res.cloudinary.com/dfsebl7h3/image/upload/v1759510067/TaniaIntriago_skjgum.jpg",
     contact: "+14752080329",
 };
 // --- 1.5. AUTHENTICATION ---
