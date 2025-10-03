@@ -2,8 +2,6 @@ import React, { useState, useEffect, FormEvent, ReactNode, createContext, useCon
 import { Routes, Route, Link, NavLink, useLocation, useNavigate, Navigate, Outlet } from 'react-router-dom';
 import * as api from './services/databaseservice';
 import AdminBookingsPage from './admin-app/AdminBookingsPage';
-import { QRCodeSVG } from 'qrcode.react';
-import { CopyIcon, ShareIcon } from '@heroicons/react/24/outline'; // adjust imports as needed
 
 type BookingStatus = 'Pending' | 'Approved' | 'Rejected';
 
@@ -278,94 +276,6 @@ const Header = () => {
                 )}
             </nav>
         </header>
-    );
-};
-
-const FooterQRCode = () => {
-    const [url, setUrl] = useState('');
-    const [canShare, setCanShare] = useState(false);
-    const [copyButtonText, setCopyButtonText] = useState('Copy Link');
-
-    useEffect(() => {
-        let path = window.location.pathname;
-        if (path.endsWith('index.html')) {
-            path = path.substring(0, path.lastIndexOf('/') + 1);
-        }
-        const homepageUrl = `${window.location.origin}${path}`;
-        setUrl(homepageUrl);
-
-        if (navigator.share) {
-            setCanShare(true);
-        }
-    }, []);
-
-    const handleShare = async () => {
-        if (!url || !canShare) return;
-        try {
-            await navigator.share({
-                title: 'SparkleClean',
-                text: 'Check out SparkleClean for professional cleaning services!',
-                url: url,
-            });
-        } catch (error) {
-            console.info('Share action cancelled or failed:', error);
-        }
-    };
-
-    const handleCopy = () => {
-        if (!url) return;
-        navigator.clipboard.writeText(url).then(() => {
-            setCopyButtonText('Copied!');
-            setTimeout(() => {
-                setCopyButtonText('Copy Link');
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
-    };
-
-    return (
-        <div className="mt-8 bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto text-center text-gray-800">
-            <h2 className="text-2xl font-bold mb-2">Share Our Website</h2>
-            <p className="text-gray-600 mb-4">
-                Scan the code with your phone's camera or use the buttons below to share.
-            </p>
-            {url ? (
-                <div className="flex justify-center mb-4">
-                    <QRCodeSVG
-                        value={url}
-                        size={192}
-                        level="H"
-                        includeMargin
-                        aria-label="QR code linking to SparkleClean homepage"
-                    />
-                </div>
-            ) : (
-                <div className="flex justify-center items-center h-48">
-                    <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-teal-500"></div>
-                </div>
-            )}
-            <div className="mt-4 flex flex-col sm:flex-row justify-center gap-3">
-                <button
-                    onClick={handleCopy}
-                    disabled={!url}
-                    className="flex items-center justify-center gap-2 bg-gray-200 text-gray-800 px-5 py-2 rounded-full font-semibold hover:bg-gray-300 transition disabled:opacity-50"
-                >
-                    <CopyIcon className="w-5 h-5" />
-                    {copyButtonText}
-                </button>
-                {canShare && (
-                    <button
-                        onClick={handleShare}
-                        disabled={!url}
-                        className="flex items-center justify-center gap-2 bg-teal-500 text-white px-5 py-2 rounded-full font-semibold hover:bg-teal-600 transition disabled:bg-teal-300"
-                    >
-                        <ShareIcon className="w-5 h-5" />
-                        Share
-                    </button>
-                )}
-            </div>
-        </div>
     );
 };
 
