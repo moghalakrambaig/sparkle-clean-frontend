@@ -2,6 +2,8 @@ import React, { useState, useEffect, FormEvent, ReactNode, createContext, useCon
 import { Routes, Route, Link, NavLink, useLocation, useNavigate, Navigate, Outlet } from 'react-router-dom';
 import * as api from './services/databaseservice';
 import AdminBookingsPage from './admin-app/AdminBookingsPage';
+import { QRCodeCanvas } from "qrcode.react";
+import { Share2, Copy } from "lucide-react"; // optional icons
 
 type BookingStatus = 'Pending' | 'Approved' | 'Rejected';
 
@@ -295,36 +297,115 @@ const Footer = () => (
 
 // --- 7. PAGE COMPONENTS ---
 const HomePage = () => {
-    const navigate = useNavigate();
-    return (
-        <div>
-            <div className="bg-sky-100 text-center py-20 md:py-32">
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-800">Pristine Clean for a Sparkling Home</h1>
-                <p className="text-lg md:text-xl text-gray-600 mt-4 max-w-2xl mx-auto">Reliable, professional, and thorough cleaning services tailored to your needs.</p>
-                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <button onClick={() => navigate('/booking')} className="bg-sky-500 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-600 transition duration-300 shadow-lg transform hover:scale-105">
-                        Book a Cleaning
-                    </button>
-                    <button onClick={() => navigate('/status')} className="bg-white text-sky-600 border border-sky-500 px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-50 transition duration-300 shadow-lg transform hover:scale-105">
-                        Check Booking Status
-                    </button>
-                </div>
-            </div>
-            <PageWrapper>
-                <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">Our Services</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {SERVICES_DATA.slice(0, 6).map(service => (
-                        <div key={service.id} className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center">
-                            <div className="flex justify-center items-center mb-4 text-sky-500"><service.icon className="h-12 w-12" /></div>
-                            <h3 className="text-xl font-bold mb-2 text-gray-800">{service.title}</h3>
-                            <p className="text-gray-600">{service.description.substring(0, 80)}...</p>
-                        </div>
-                    ))}
-                </div>
-                <div className="text-center mt-12"><Link to="/services" className="text-sky-600 font-semibold hover:underline">View All Services &rarr;</Link></div>
-            </PageWrapper>
+  const navigate = useNavigate();
+  const websiteUrl = window.location.origin;
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "SparkleClean - Book Your Cleaning Now!",
+          text: "Check out SparkleClean — professional home cleaning at your fingertips!",
+          url: websiteUrl,
+        });
+      } catch (err) {
+        console.error("Share failed:", err);
+      }
+    } else {
+      navigator.clipboard.writeText(websiteUrl);
+      alert("Link copied to clipboard!");
+    }
+  };
+
+  return (
+    <div>
+      {/* Hero Section */}
+      <div className="bg-sky-100 text-center py-20 md:py-32">
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-800">
+          Pristine Clean for a Sparkling Home
+        </h1>
+        <p className="text-lg md:text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
+          Reliable, professional, and thorough cleaning services tailored to your needs.
+        </p>
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button
+            onClick={() => navigate("/booking")}
+            className="bg-sky-500 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-600 transition duration-300 shadow-lg transform hover:scale-105"
+          >
+            Book a Cleaning
+          </button>
+          <button
+            onClick={() => navigate("/status")}
+            className="bg-white text-sky-600 border border-sky-500 px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-50 transition duration-300 shadow-lg transform hover:scale-105"
+          >
+            Check Booking Status
+          </button>
         </div>
-    );
+      </div>
+
+      {/* Services Section */}
+      <PageWrapper>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+          Our Services
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {SERVICES_DATA.slice(0, 6).map((service) => (
+            <div
+              key={service.id}
+              className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center"
+            >
+              <div className="flex justify-center items-center mb-4 text-sky-500">
+                <service.icon className="h-12 w-12" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 text-gray-800">
+                {service.title}
+              </h3>
+              <p className="text-gray-600">
+                {service.description.substring(0, 80)}...
+              </p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <Link
+            to="/services"
+            className="text-sky-600 font-semibold hover:underline"
+          >
+            View All Services &rarr;
+          </Link>
+        </div>
+
+        {/* ✅ QR Code & Share Section */}
+        <div className="mt-20 text-center bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Share SparkleClean
+          </h2>
+          <QRCodeCanvas value={websiteUrl} size={180} />
+          <p className="text-gray-600 text-sm mt-4 break-all">{websiteUrl}</p>
+
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+            <button
+              onClick={handleShare}
+              className="flex items-center justify-center gap-2 bg-sky-500 text-white px-5 py-2 rounded-md shadow-md hover:bg-sky-600 transition"
+            >
+              <Share2 size={18} />
+              Share App
+            </button>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(websiteUrl);
+                alert("Link copied to clipboard!");
+              }}
+              className="flex items-center justify-center gap-2 border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 transition"
+            >
+              <Copy size={18} />
+              Copy Link
+            </button>
+          </div>
+        </div>
+      </PageWrapper>
+    </div>
+  );
 };
 
 const ServicesPage = () => {
