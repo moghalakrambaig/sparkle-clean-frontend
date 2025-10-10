@@ -319,7 +319,7 @@ const HomePage = () => {
 
   return (
     <div>
-      {/* Hero Section */}
+      {/* 🌤️ Hero Section */}
       <div className="bg-sky-100 text-center py-20 md:py-32">
         <h1 className="text-4xl md:text-6xl font-bold text-gray-800">
           Pristine Clean for a Sparkling Home
@@ -343,7 +343,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Services Section */}
+      {/* 🧹 Services Section */}
       <PageWrapper>
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
           Our Services
@@ -366,6 +366,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
+
         <div className="text-center mt-12">
           <Link
             to="/services"
@@ -375,32 +376,47 @@ const HomePage = () => {
           </Link>
         </div>
 
-        {/* ✅ QR Code & Share Section */}
-        <div className="mt-20 text-center bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Share SparkleClean
-          </h2>
-          <QRCodeCanvas value={websiteUrl} size={180} />
-          <p className="text-gray-600 text-sm mt-4 break-all">{websiteUrl}</p>
+        {/* 🌈 Colorful QR Code & Share Section */}
+        <div className="mt-20 bg-gradient-to-br from-sky-100 via-sky-200 to-sky-300 py-12 px-4 rounded-2xl shadow-inner">
+          <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-2xl max-w-md mx-auto text-center flex flex-col items-center justify-center">
+            <h2 className="text-3xl font-extrabold text-sky-700 mb-4 drop-shadow-sm">
+              Share SparkleClean ✨
+            </h2>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
-            <button
-              onClick={handleShare}
-              className="flex items-center justify-center gap-2 bg-sky-500 text-white px-5 py-2 rounded-md shadow-md hover:bg-sky-600 transition"
-            >
-              <Share2 size={18} />
-              Share App
-            </button>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(websiteUrl);
-                alert("Link copied to clipboard!");
-              }}
-              className="flex items-center justify-center gap-2 border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 transition"
-            >
-              <Copy size={18} />
-              Copy Link
-            </button>
+            {/* Centered QR Code */}
+            <div className="flex justify-center mb-6 p-4 bg-gradient-to-tr from-sky-400 to-cyan-400 rounded-xl shadow-md">
+              <QRCodeCanvas
+                value={websiteUrl}
+                size={180}
+                bgColor="#ffffff"
+                fgColor="#0284c7"
+                level="Q"
+                includeMargin={true}
+              />
+            </div>
+
+            <p className="text-gray-700 text-sm break-all mb-6">{websiteUrl}</p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-3 w-full">
+              <button
+                onClick={handleShare}
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-cyan-500 text-white px-5 py-2 rounded-md shadow-md hover:from-sky-600 hover:to-cyan-600 transition-all transform hover:scale-105 w-full sm:w-auto"
+              >
+                <Share2 size={18} />
+                Share App
+              </button>
+
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(websiteUrl);
+                  alert("Link copied to clipboard!");
+                }}
+                className="flex items-center justify-center gap-2 border border-sky-400 text-sky-700 px-5 py-2 rounded-md hover:bg-sky-50 transition-all transform hover:scale-105 w-full sm:w-auto"
+              >
+                <Copy size={18} />
+                Copy Link
+              </button>
+            </div>
           </div>
         </div>
       </PageWrapper>
