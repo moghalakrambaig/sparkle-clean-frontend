@@ -4,6 +4,7 @@ import * as api from './services/databaseservice';
 import AdminBookingsPage from './admin-app/AdminBookingsPage';
 import { QRCodeCanvas } from "qrcode.react";
 import { Share2, Copy } from "lucide-react"; // optional icons
+import { motion } from "framer-motion";
 
 type BookingStatus = 'Pending' | 'Approved' | 'Rejected';
 
@@ -425,30 +426,54 @@ const HomePage = () => {
 };
 
 const ServicesPage = () => {
-    const navigate = useNavigate();
-    return (
-        <PageWrapper>
-            <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">Our Cleaning Services</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {SERVICES_DATA.map(service => (
-                    <div key={service.id} className="bg-white p-8 rounded-lg shadow-md flex flex-col">
-                        <div className="flex items-center mb-4">
-                            <div className="p-3 bg-sky-100 rounded-full mr-4 text-sky-500"><service.icon className="h-8 w-8" /></div>
-                            <div>
-                                <h3 className="text-2xl font-bold text-gray-800">{service.title}</h3>
-                                {/* <p className="text-lg font-semibold text-sky-600">{service.price}</p> */}
-                            </div>
-                        </div>
-                        <p className="text-gray-600 flex-grow mb-6">{service.description}</p>
-                        <button onClick={() => navigate(`/booking?service=${service.id}`)} className="mt-auto bg-sky-500 text-white px-6 py-2 rounded-full hover:bg-sky-600 transition duration-300 self-start">
-                            Book This Service
-                        </button>
-                    </div>
-                ))}
+  const navigate = useNavigate();
+
+  return (
+    <PageWrapper>
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-3">
+          Our Cleaning Services
+        </h1>
+        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          Choose from our wide range of professional cleaning services — we’ll make your space shine!
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {SERVICES_DATA.map((service, index) => (
+          <motion.div
+            key={service.id}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="bg-gradient-to-br from-white to-sky-50 p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-sky-100 flex flex-col"
+          >
+            <div className="flex items-center mb-6">
+              <div className="p-4 bg-gradient-to-br from-sky-400 to-indigo-500 rounded-full mr-5 shadow-md">
+                <service.icon className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold text-gray-800">{service.title}</h3>
+              </div>
             </div>
-        </PageWrapper>
-    );
+
+            <p className="text-gray-600 mb-6 flex-grow leading-relaxed">
+              {service.description}
+            </p>
+
+            <button
+              onClick={() => navigate(`/booking?service=${service.id}`)}
+              className="mt-auto bg-gradient-to-r from-sky-500 to-indigo-600 text-white px-6 py-3 rounded-full font-semibold hover:from-sky-600 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg"
+            >
+              Book This Service
+            </button>
+          </motion.div>
+        ))}
+      </div>
+    </PageWrapper>
+  );
 };
+
 
 const BookingPage = () => {
     const navigate = useNavigate();
