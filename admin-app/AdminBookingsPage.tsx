@@ -111,7 +111,7 @@ const AdminBookingsPage: React.FC = () => {
                       .join(" ")}
                   </h2>
                   <p className="text-sm text-gray-500 mb-2 font-mono tracking-tight">
-                    #{b.bookingNumber}
+                    {b.bookingNumber}
                   </p>
 
                   <div className="text-gray-700 space-y-1">
