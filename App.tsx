@@ -298,181 +298,179 @@ const Footer = () => (
 
 // --- 7. PAGE COMPONENTS ---
 const HomePage = () => {
-  const navigate = useNavigate();
-  const websiteUrl = window.location.origin;
+    const navigate = useNavigate();
+    const websiteUrl = window.location.origin;
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "SparkleClean - Book Your Cleaning Now!",
-          text: "Check out SparkleClean — professional home cleaning at your fingertips!",
-          url: websiteUrl,
-        });
-      } catch (err) {
-        console.error("Share failed:", err);
-      }
-    } else {
-      navigator.clipboard.writeText(websiteUrl);
-      alert("Link copied to clipboard!");
-    }
-  };
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: "SparkleClean - Book Your Cleaning Now!",
+                    text: "Check out SparkleClean — professional home cleaning at your fingertips!",
+                    url: websiteUrl,
+                });
+            } catch (err) {
+                console.error("Share failed:", err);
+            }
+        } else {
+            navigator.clipboard.writeText(websiteUrl);
+            alert("Link copied to clipboard!");
+        }
+    };
 
-  return (
-    <div>
-      {/* 🌤️ Hero Section */}
-      <div className="bg-sky-100 text-center py-20 md:py-32">
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-800">
-          Pristine Clean for a Sparkling Home
-        </h1>
-        <p className="text-lg md:text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
-          Reliable, professional, and thorough cleaning services tailored to your needs.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            onClick={() => navigate("/booking")}
-            className="bg-sky-500 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-600 transition duration-300 shadow-lg transform hover:scale-105"
-          >
-            Book a Cleaning
-          </button>
-          <button
-            onClick={() => navigate("/status")}
-            className="bg-white text-sky-600 border border-sky-500 px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-50 transition duration-300 shadow-lg transform hover:scale-105"
-          >
-            Check Booking Status
-          </button>
-        </div>
-      </div>
-
-      {/* 🧹 Services Section */}
-      <PageWrapper>
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-          Our Services
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SERVICES_DATA.slice(0, 6).map((service) => (
-            <div
-              key={service.id}
-              className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center"
-            >
-              <div className="flex justify-center items-center mb-4 text-sky-500">
-                <service.icon className="h-12 w-12" />
-              </div>
-              <h3 className="text-xl font-bold mb-2 text-gray-800">
-                {service.title}
-              </h3>
-              <p className="text-gray-600">
-                {service.description.substring(0, 80)}...
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <Link
-            to="/services"
-            className="text-sky-600 font-semibold hover:underline"
-          >
-            View All Services &rarr;
-          </Link>
-        </div>
-
-        {/* 🌈 Colorful QR Code & Share Section */}
-        <div className="mt-20 bg-gradient-to-br from-sky-100 via-sky-200 to-sky-300 py-12 px-4 rounded-2xl shadow-inner">
-          <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-2xl max-w-md mx-auto text-center flex flex-col items-center justify-center">
-            <h2 className="text-3xl font-extrabold text-sky-700 mb-4 drop-shadow-sm">
-              Share SparkleClean ✨
-            </h2>
-
-            {/* Centered QR Code */}
-            <div className="flex justify-center mb-6 p-4 bg-gradient-to-tr from-sky-400 to-cyan-400 rounded-xl shadow-md">
-              <QRCodeCanvas
-                value={websiteUrl}
-                size={180}
-                bgColor="#ffffff"
-                fgColor="#0284c7"
-                level="Q"
-                includeMargin={true}
-              />
+    return (
+        <div>
+            {/* 🌤️ Hero Section */}
+            <div className="bg-sky-100 text-center py-20 md:py-32">
+                <h1 className="text-4xl md:text-6xl font-bold text-gray-800">
+                    Pristine Clean for a Sparkling Home
+                </h1>
+                <p className="text-lg md:text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
+                    Reliable, professional, and thorough cleaning services tailored to your needs.
+                </p>
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button
+                        onClick={() => navigate("/booking")}
+                        className="bg-sky-500 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-600 transition duration-300 shadow-lg transform hover:scale-105"
+                    >
+                        Book a Cleaning
+                    </button>
+                    <button
+                        onClick={() => navigate("/status")}
+                        className="bg-white text-sky-600 border border-sky-500 px-8 py-3 rounded-full text-lg font-semibold hover:bg-sky-50 transition duration-300 shadow-lg transform hover:scale-105"
+                    >
+                        Check Booking Status
+                    </button>
+                </div>
             </div>
 
-            <p className="text-gray-700 text-sm break-all mb-6">{websiteUrl}</p>
+            {/* 🧹 Services Section */}
+            <PageWrapper>
+                <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+                    Our Services
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {SERVICES_DATA.slice(0, 6).map((service) => (
+                        <div
+                            key={service.id}
+                            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center"
+                        >
+                            <div className="flex justify-center items-center mb-4 text-sky-500">
+                                <service.icon className="h-12 w-12" />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 text-gray-800">
+                                {service.title}
+                            </h3>
+                            <p className="text-gray-600">
+                                {service.description.substring(0, 80)}...
+                            </p>
+                        </div>
+                    ))}
+                </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-3 w-full">
-              <button
-                onClick={handleShare}
-                className="flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-cyan-500 text-white px-5 py-2 rounded-md shadow-md hover:from-sky-600 hover:to-cyan-600 transition-all transform hover:scale-105 w-full sm:w-auto"
-              >
-                <Share2 size={18} />
-                Share App
-              </button>
+                <div className="text-center mt-12">
+                    <Link
+                        to="/services"
+                        className="text-sky-600 font-semibold hover:underline"
+                    >
+                        View All Services &rarr;
+                    </Link>
+                </div>
 
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(websiteUrl);
-                  alert("Link copied to clipboard!");
-                }}
-                className="flex items-center justify-center gap-2 border border-sky-400 text-sky-700 px-5 py-2 rounded-md hover:bg-sky-50 transition-all transform hover:scale-105 w-full sm:w-auto"
-              >
-                <Copy size={18} />
-                Copy Link
-              </button>
-            </div>
-          </div>
+                {/* 🌈 Colorful QR Code & Share Section */}
+                <div className="mt-20 bg-gradient-to-br from-sky-100 via-sky-200 to-sky-300 py-12 px-4 rounded-2xl shadow-inner">
+                    <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-2xl max-w-md mx-auto text-center flex flex-col items-center justify-center">
+                        <h2 className="text-3xl font-extrabold text-sky-700 mb-4 drop-shadow-sm">
+                            Share SparkleClean ✨
+                        </h2>
+
+                        {/* Centered QR Code */}
+                        <div className="flex justify-center mb-6 p-4 bg-gradient-to-tr from-sky-400 to-cyan-400 rounded-xl shadow-md">
+                            <QRCodeCanvas
+                                value={websiteUrl}
+                                size={180}
+                                bgColor="#ffffff"
+                                fgColor="#0284c7"
+                                level="Q"
+                                includeMargin={true}
+                            />
+                        </div>
+
+                        <p className="text-gray-700 text-sm break-all mb-6">{websiteUrl}</p>
+
+                        <div className="flex flex-col sm:flex-row justify-center gap-3 w-full">
+                            <button
+                                onClick={handleShare}
+                                className="flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-cyan-500 text-white px-5 py-2 rounded-md shadow-md hover:from-sky-600 hover:to-cyan-600 transition-all transform hover:scale-105 w-full sm:w-auto"
+                            >
+                                <Share2 size={18} />
+                                Share App
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(websiteUrl);
+                                    alert("Link copied to clipboard!");
+                                }}
+                                className="flex items-center justify-center gap-2 border border-sky-400 text-sky-700 px-5 py-2 rounded-md hover:bg-sky-50 transition-all transform hover:scale-105 w-full sm:w-auto"
+                            >
+                                <Copy size={18} />
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </PageWrapper>
         </div>
-      </PageWrapper>
-    </div>
-  );
+    );
 };
 
 const ServicesPage = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  return (
-    <PageWrapper>
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-3 pb-1 leading-tight">
-          Our Cleaning Services
-        </h1>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-          Choose from our wide range of professional cleaning services — we'll make your space shine!
-        </p>
-      </div>
-
-      {/* Rest of your component remains the same */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {SERVICES_DATA.map((service, index) => (
-          <motion.div
-            key={service.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="bg-gradient-to-br from-white to-sky-50 p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-sky-100 flex flex-col"
-          >
-            <div className="flex items-center mb-6">
-              <div className="p-4 bg-gradient-to-br from-sky-400 to-indigo-500 rounded-full mr-5 shadow-md">
-                <service.icon className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-semibold text-gray-800">{service.title}</h3>
-              </div>
+    return (
+        <PageWrapper>
+            <div className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-3 leading-relaxed pb-1">
+                    Our Cleaning Services
+                </h1>
+                <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Choose from our wide range of professional cleaning services — we’ll make your space shine!
+                </p>
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {SERVICES_DATA.map((service, index) => (
+                    <motion.div
+                        key={service.id}
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        className="bg-gradient-to-br from-white to-sky-50 p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-sky-100 flex flex-col"
+                    >
+                        <div className="flex items-center mb-6">
+                            <div className="p-4 bg-gradient-to-br from-sky-400 to-indigo-500 rounded-full mr-5 shadow-md">
+                                <service.icon className="h-8 w-8 text-white" />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-semibold text-gray-800">{service.title}</h3>
+                            </div>
+                        </div>
 
-            <p className="text-gray-600 mb-6 flex-grow leading-relaxed">
-              {service.description}
-            </p>
+                        <p className="text-gray-600 mb-6 flex-grow leading-relaxed">
+                            {service.description}
+                        </p>
 
-            <button
-              onClick={() => navigate(`/booking?service=${service.id}`)}
-              className="mt-auto bg-gradient-to-r from-sky-500 to-indigo-600 text-white px-6 py-3 rounded-full font-semibold hover:from-sky-600 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              Book This Service
-            </button>
-          </motion.div>
-        ))}
-      </div>
-    </PageWrapper>
-  );
+                        <button
+                            onClick={() => navigate(`/booking?service=${service.id}`)}
+                            className="mt-auto bg-gradient-to-r from-sky-500 to-indigo-600 text-white px-6 py-3 rounded-full font-semibold hover:from-sky-600 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                        >
+                            Book This Service
+                        </button>
+                    </motion.div>
+                ))}
+            </div>
+        </PageWrapper>
+    );
 };
 
 
