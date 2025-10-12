@@ -46,7 +46,7 @@ export const House_Cleaner: Cleaner = {
     role: "Founder & Head Cleaner",
     bio: "With years of experience, I founded SparkleClean from a passion for making homes and workplaces fresh, vibrant, and healthy. To me, cleaning isn’t just a service—it’s about creating a sparkle that brings comfort, clarity, and joy.",
     imageUrl: "https://res.cloudinary.com/dfsebl7h3/image/upload/v1759510067/TaniaIntriago_skjgum.jpg",
-    contact: "+14752080329",
+    contact: "+12039630648",
 };
 // --- 1.5. AUTHENTICATION ---
 interface AuthContextType {
