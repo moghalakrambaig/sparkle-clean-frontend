@@ -431,14 +431,15 @@ const ServicesPage = () => {
   return (
     <PageWrapper>
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-3">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-3 pb-1 leading-tight">
           Our Cleaning Services
         </h1>
         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-          Choose from our wide range of professional cleaning services — we’ll make your space shine!
+          Choose from our wide range of professional cleaning services — we'll make your space shine!
         </p>
       </div>
 
+      {/* Rest of your component remains the same */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {SERVICES_DATA.map((service, index) => (
           <motion.div
