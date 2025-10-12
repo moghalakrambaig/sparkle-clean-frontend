@@ -63,7 +63,7 @@ const AdminBookingsPage: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold text-sky-700 mb-2 leading-relaxed pb-2">
             Admin Booking Dashboard
           </h1>
           <p className="text-gray-600 text-lg">
@@ -124,11 +124,11 @@ const AdminBookingsPage: React.FC = () => {
                     <span
                       className={`px-3 py-1 text-xs font-semibold rounded-full shadow-sm
                       ${b.status === "Approved"
-                        ? "bg-green-100 text-green-700 border border-green-200"
-                        : b.status === "Rejected"
-                          ? "bg-red-100 text-red-700 border border-red-200"
-                          : "bg-yellow-100 text-yellow-700 border border-yellow-200"
-                      }`}
+                          ? "bg-green-100 text-green-700 border border-green-200"
+                          : b.status === "Rejected"
+                            ? "bg-red-100 text-red-700 border border-red-200"
+                            : "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                        }`}
                     >
                       {b.status}
                     </span>
