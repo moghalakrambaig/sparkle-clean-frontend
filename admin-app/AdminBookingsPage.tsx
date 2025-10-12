@@ -104,8 +104,11 @@ const AdminBookingsPage: React.FC = () => {
                 className="bg-white rounded-2xl shadow-lg border border-sky-100 p-6 flex flex-col justify-between hover:shadow-2xl transition-all duration-300"
               >
                 <div>
-                  <h2 className="text-2xl font-semibold text-sky-600 mb-1">
-                    {b.service}
+                  <h2 className="text-xl font-semibold text-sky-600">
+                    {b.service
+                      .split("-")
+                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(" ")}
                   </h2>
                   <p className="text-sm text-gray-500 mb-2 font-mono tracking-tight">
                     #{b.bookingNumber}
